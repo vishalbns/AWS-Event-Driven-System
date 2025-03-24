@@ -5,7 +5,7 @@ Designing a **fault-tolerant, scalable, and automated** event-driven system that
 - Processes real-time events from **mobile & IoT devices** 📱🔗 
 - Ensures **data accuracy** via multi-step validation 🔄 
 - Detects **missed**, **incorrectly** **processed** and **anomalies,** and **corrects automatically** 🛠 
-- Uses **AWS-native services** for efficiency and monitoring 📊 ![](images/Aspose.Words.74e18f93-5aed-40f6-9ab6-407199f24857.001.png)![](images/Aspose.Words.74e18f93-5aed-40f6-9ab6-407199f24857.002.png)
+- Uses **AWS-native services** for efficiency and monitoring 📊 ![](images/Aspose.Words.74e18f93-5aed-40f6-9ab6-407199f24857.001.png)![](images/Flow-Chart.png)
 
 ![](images/Aspose.Words.74e18f93-5aed-40f6-9ab6-407199f24857.003.png)
 ## 🔷 **Step 1: Event Generation & Ingestion** 
