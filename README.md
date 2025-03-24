@@ -19,7 +19,7 @@ Designing a **fault-tolerant, scalable, and automated** event-driven system that
 
 #### **Flow:** 
 
-1🛜 Mobile & IoT devices send events to **EventBridge**.<br>  
+1⃣ Mobile & IoT devices send events to **EventBridge**.<br>  
 2⃣ EventBridge applies **basic structural validation** (schema check).<br>
 3⃣ ✅ If valid → Forwarded to the **Lambda Verification Function**.<br>
 4⃣ ❌ If invalid → Sent to **Dead Letter Queue (DLQ) for later review**.<br>
