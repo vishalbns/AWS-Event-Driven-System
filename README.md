@@ -5,9 +5,8 @@ Designing a **fault-tolerant, scalable, and automated** event-driven system that
 - Processes real-time events from **mobile & IoT devices** 📱🔗 
 - Ensures **data accuracy** via multi-step validation 🔄 
 - Detects **missed**, **incorrectly** **processed** and **anomalies,** and **corrects automatically** 🛠 
-- Uses **AWS-native services** for efficiency and monitoring 📊 ![](images/Aspose.Words.74e18f93-5aed-40f6-9ab6-407199f24857.001.png)![](images/Flow-Chart.png)
+- Uses **AWS-native services** for efficiency and monitoring 📊 ![](images/Flow_Chart.png)
 
-![](images/Aspose.Words.74e18f93-5aed-40f6-9ab6-407199f24857.003.png)
 ## 🔷 **Step 1: Event Generation & Ingestion** 
 ### 🛜 **Mobile & IoT Devices → AWS EventBridge** 
 - Events originate from **mobile/web apps** & **IoT devices**. 
@@ -20,7 +19,7 @@ Designing a **fault-tolerant, scalable, and automated** event-driven system that
 
 ` `2⃣EventBridge applies **basic structural validation** (schema check).  3⃣✅ If valid → Forwarded to the **Lambda Verification Function**. 
 
-` `4⃣❌ If invalid → Sent to **Dead Letter Queue (DLQ) for later review**. ![ref1]
+` `4⃣❌ If invalid → Sent to **Dead Letter Queue (DLQ) for later review**. !
 ## 🔷 **Step 2: Event Verification & Processing** 
 ### 🛡 **AWS Lambda (Verification Lambda) → AWS Lambda (Calculation Lambda)** 
 Once an event passes structural validation, it undergoes **further verification** to check: 
@@ -55,7 +54,7 @@ All **EventBridge, Lambda, and S3** activities are monitored by **CloudWatch**.
 - #### **Flow:** 
 1⃣CloudWatch **monitors logs and metrics** from EventBridge, Lambda, and S3.  2⃣If errors/discrepancies are detected → **Triggers Correction Lambda**. 
 
-` `3⃣**Correction Lambda** determines if recalculation is needed. ![ref1]
+` `3⃣**Correction Lambda** determines if recalculation is needed. !
 ## 🔷 **Step 4: Anomaly Detection & Reprocessing** 
 ### 🤖 **Amazon SageMaker (Anomaly Detection)** 
 - S3-stored event data is **retrieved by SageMaker**. 
@@ -82,13 +81,13 @@ Once an event is flagged, the **Correction Lambda** decides if recalculation is 
 ### **Why DynamoDB?** 
 - **Tracks correction history** → Prevents infinite loops of retrying. 
   - **Fast lookups** → Ensures correction is not repeated unnecessarily. 
-## 🔷 **Step 6: Dead Letter Queue (Final Retries & Investigation) ![ref1]**
+## 🔷 **Step 6: Dead Letter Queue (Final Retries & Investigation)**
 ### ❌ **SQS DLQ (Final Retry Mechanism & Investigation Storage)** 
 - Events that **fail multiple times** are stored in **DLQ**. 
 - A **Lambda function periodically checks DLQ** and retries processing. 
 ### **Why DLQ?** 
 - **Prevents Event Loss** – Stores all failed events for later analysis. 
-  - **Retry Handling** – Lambda function can **retry events before archiving**. ![ref1]
+  - **Retry Handling** – Lambda function can **retry events before archiving**. 
 
 🔷 **Step 7: Dead Letter Queue (Final Retries & Investigation)** ❌ **SQS DLQ (Final Retry Mechanism & Investigation Storage)**
 
@@ -113,7 +112,7 @@ A **DLQ Processing Lambda** is triggered when events land in the DLQ to attempt 
   ` `4⃣If recalculation is **successful**, the event is **overwritten in S3**. 
 
   ` `5⃣If **failure persists even after retries**, event is stored permanently in **S3 for manual intervention**. 
-## 📌 **AWS Services Used & Why? ![ref1]**
+## 📌 **AWS Services Used & Why?**
 
 **AWS Service** 
 
@@ -157,7 +156,7 @@ Ensures **no duplicate corrections** and **fast lookups**.
 
 Stores **failed events**, allows **retry logic** to be applied. 
 
-## 🔄 **Trade-offs & Limitations ![ref1]**
+## 🔄 **Trade-offs & Limitations**
 
 **Trade-off** 
 
@@ -185,14 +184,14 @@ cause a **backlog in retries**.  control retry rates.
 
 🛠 **Enhanced Approach with Additional Tools** 🔧** 
 
-If I had access to more tools like a **database** (e.g., Amazon RDS or DynamoDB) and **logs**, the approach would evolve to include **historical event storage** for faster recalculations and anomaly detection. By using a database, I could **retrieve past events** more efficiently instead of relying solely on S3, enabling quicker anomaly detection and comparison with historical data. Integrating **OpenSearch (Elasticsearch)** for **log analytics** would provide real-time insights, making error resolution faster and more proactive. Additionally, utilizing **Kinesis** for **real-time streaming** could enhance processing efficiency, enabling **immediate anomaly detection** without needing batch processing, further boosting scalability and responsiveness. 🚀📈 ![ref1]
+If I had access to more tools like a **database** (e.g., Amazon RDS or DynamoDB) and **logs**, the approach would evolve to include **historical event storage** for faster recalculations and anomaly detection. By using a database, I could **retrieve past events** more efficiently instead of relying solely on S3, enabling quicker anomaly detection and comparison with historical data. Integrating **OpenSearch (Elasticsearch)** for **log analytics** would provide real-time insights, making error resolution faster and more proactive. Additionally, utilizing **Kinesis** for **real-time streaming** could enhance processing efficiency, enabling **immediate anomaly detection** without needing batch processing, further boosting scalability and responsiveness. 🚀📈
 ## 📈 **How This Scales to Millions of Events per Hour** 
 🚀 **Scalability Considerations:** ✔ **AWS Lambda auto-scales** – Each Lambda execution is independent, so no bottleneck. 
 
 - **EventBridge can process millions of events per second** – Ensures smooth ingestion. 
 - **S3’s infinite storage** – Can handle petabytes of event data with no impact on performance. 
 - **DynamoDB’s low-latency lookups** – Ensures fast correction history checks. 
-- **SageMaker batch processing** – Enables anomaly detection at scale without high costs. ![ref1]
+- **SageMaker batch processing** – Enables anomaly detection at scale without high costs.
 ## 🎯 **Key Takeaways** 
 - **Highly scalable event-driven system** using AWS-native tools. 
   - **No single point of failure** – Everything is decoupled. 
@@ -204,7 +203,7 @@ lost.
 
 needed. 
 
-- **Intelligent anomaly detection** – SageMaker improves system accuracy over time. ![ref1]
+- **Intelligent anomaly detection** – SageMaker improves system accuracy over time.
 ## 📝 **Summary of Workflow** 
 📤 **Event Ingestion:** Mobile/IoT → **EventBridge** (Basic validation) 
 
@@ -216,12 +215,10 @@ needed.
 
 ` `🛠 **Correction & Recalculation:** **CloudWatch triggers correction Lambda** → **Event reprocessed if needed** 
 
-` `📌 **Final Failure Handling:** If retry fails → Sent to **SQS DLQ** → **Final retry or push to S3 failure storage ![ref1]**
+` `📌 **Final Failure Handling:** If retry fails → Sent to **SQS DLQ** → **Final retry or push to S3 failure storage**
 ### 🔥 **Final Thoughts** 
 🎯 This architecture provides **reliability, scalability, and real-time monitoring** for event-driven workloads. 
 
 ` `🚀 **Using AWS-native services ensures** a **cost-effective, serverless, and scalable** solution. 
 
-⚡ **Automated anomaly detection and corrections improve event integrity over time. ![ref1]**
-
-[ref1]: Aspose.Words.74e18f93-5aed-40f6-9ab6-407199f24857.004.png
+⚡ **Automated anomaly detection and corrections improve event integrity over time.**
