@@ -19,7 +19,7 @@ Designing a **fault-tolerant, scalable, and automated** event-driven system that
 
 #### **Flow:** 
 
-1⃣ Mobile & IoT devices send events to **EventBridge**.<br>  
+1🛜 Mobile & IoT devices send events to **EventBridge**.<br>  
 2⃣ EventBridge applies **basic structural validation** (schema check).<br>
 3⃣ ✅ If valid → Forwarded to the **Lambda Verification Function**.<br>
 4⃣ ❌ If invalid → Sent to **Dead Letter Queue (DLQ) for later review**.<br>
@@ -134,8 +134,8 @@ A **DLQ Processing Lambda** is triggered when events land in the DLQ to attempt 
 1⃣ DLQ stores failed events for later review.<br>
 2⃣ A **Lambda function** is triggered when events are added to DLQ.<br>
 3⃣ Lambda **checks DynamoDB** if the event was already corrected: 
-- ✅ If **not corrected before** → Sent to **Recalculation Lambda**. 
-- ❌ If **already corrected once** → Pushed to **S3 Failure Storage** for manual investigation.<br> 
+  - ✅ If **not corrected before** → Sent to **Recalculation Lambda**. 
+  - ❌ If **already corrected once** → Pushed to **S3 Failure Storage** for manual investigation.<br><br>
 4⃣ If recalculation is **successful**, the event is **overwritten in S3**.<br>
 5⃣ If **failure persists even after retries**, event is stored permanently in **S3 for manual intervention**.<br>
 
