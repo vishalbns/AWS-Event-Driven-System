@@ -19,10 +19,10 @@ Designing a **fault-tolerant, scalable, and automated** event-driven system that
 
 #### **Flow:** 
 
-1⃣ Mobile & IoT devices send events to **EventBridge**. 
-2⃣ EventBridge applies **basic structural validation** (schema check).  
-3⃣ ✅ If valid → Forwarded to the **Lambda Verification Function**. 
-4⃣ ❌ If invalid → Sent to **Dead Letter Queue (DLQ) for later review**.
+1⃣ Mobile & IoT devices send events to **EventBridge**.<br>  
+2⃣ EventBridge applies **basic structural validation** (schema check).<br>
+3⃣ ✅ If valid → Forwarded to the **Lambda Verification Function**.<br>
+4⃣ ❌ If invalid → Sent to **Dead Letter Queue (DLQ) for later review**.<br>
 
 ## 🔷 **Step 2: Event Verification & Processing** 
 ### 🛡 **AWS Lambda (Verification Lambda) → AWS Lambda (Calculation Lambda)** 
@@ -37,9 +37,9 @@ Once an event passes structural validation, it undergoes **further verification*
 
 #### **Flow:** 
 
-1⃣ **Verification Lambda** checks event details. 
-2⃣ ✅ If valid → Sent to **Calculation Lambda** for processing.  
-3⃣ ❌ If invalid → Sent to **DLQ for failure handling**. 
+1⃣ **Verification Lambda** checks event details.<br>
+2⃣ ✅ If valid → Sent to **Calculation Lambda** for processing.<br> 
+3⃣ ❌ If invalid → Sent to **DLQ for failure handling**.<br>
 
 ### 📊 **AWS Lambda (Calculation Lambda) → Amazon S3** 
 
@@ -56,9 +56,9 @@ Once verified, the event is **processed and stored**.
 
 #### **Flow:** 
 
-1⃣ **Calculation Lambda** performs key business logic. 
-2⃣ ✅ Successful results are stored in **S3 for long-term storage**.
-3⃣❌ If processing fails → Event goes to **DLQ for later retries**.
+1⃣ **Calculation Lambda** performs key business logic.<br>
+2⃣ ✅ Successful results are stored in **S3 for long-term storage**.<br>
+3⃣❌ If processing fails → Event goes to **DLQ for later retries**.<br>
 
 ## 🔷 **Step 3: Monitoring & Error Detection** 
 
@@ -71,9 +71,9 @@ All **EventBridge, Lambda, and S3** activities are monitored by **CloudWatch**.
 - **Automation** – Can trigger Lambda for corrections. 
 
 ### **Flow:** 
-1⃣ CloudWatch **monitors logs and metrics** from EventBridge, Lambda, and S3.
-2⃣ If errors/discrepancies are detected → **Triggers Correction Lambda**. 
-3⃣ **Correction Lambda** determines if recalculation is needed.
+1⃣ CloudWatch **monitors logs and metrics** from EventBridge, Lambda, and S3.<br>
+2⃣ If errors/discrepancies are detected → **Triggers Correction Lambda**.<br> 
+3⃣ **Correction Lambda** determines if recalculation is needed.<br>
 
 ## 🔷 **Step 4: Anomaly Detection & Reprocessing**
 
@@ -88,10 +88,10 @@ All **EventBridge, Lambda, and S3** activities are monitored by **CloudWatch**.
 - **Automated Anomaly Detection** – No need for manual tracking. 
 
 #### **Flow:** 
-1⃣ SageMaker retrieves processed event data from **S3**. 
-2⃣ **ML Model detects anomalies** in calculations. 
-3⃣ If anomaly is found → SageMaker sends an **alert to CloudWatch**.
-4⃣ CloudWatch triggers **Correction Lambda** for reprocessing.
+1⃣ SageMaker retrieves processed event data from **S3**.<br> 
+2⃣ **ML Model detects anomalies** in calculations.<br> 
+3⃣ If anomaly is found → SageMaker sends an **alert to CloudWatch**.<br>
+4⃣ CloudWatch triggers **Correction Lambda** for reprocessing.<br>
 
 ## 🔷 **Step 5: Automated Event Correction & Reprocessing** 
 
@@ -99,10 +99,10 @@ All **EventBridge, Lambda, and S3** activities are monitored by **CloudWatch**.
 
 Once an event is flagged, the **Correction Lambda** decides if recalculation is needed. 
 - #### **Flow:** 
-1⃣ **Correction Lambda** checks DynamoDB for previous corrections. 
-2⃣ **If never corrected** → Sent to **Recalculation Lambda**. 
-3⃣ **If already corrected once** → Sent to **SQS DLQ** for manual review.  
-4⃣ **Successful recalculations** → Overwrite event data in **S3**. 
+1⃣ **Correction Lambda** checks DynamoDB for previous corrections.<br> 
+2⃣ **If never corrected** → Sent to **Recalculation Lambda**.<br> 
+3⃣ **If already corrected once** → Sent to **SQS DLQ** for manual review.<br>  
+4⃣ **Successful recalculations** → Overwrite event data in **S3**.<br> 
 
 ### **Why DynamoDB?**
 
@@ -131,13 +131,13 @@ A **DLQ Processing Lambda** is triggered when events land in the DLQ to attempt 
 
 - **Flow:** 
 
-1⃣ DLQ stores failed events for later review. 
-2⃣ A **Lambda function** is triggered when events are added to DLQ.
+1⃣ DLQ stores failed events for later review.<br>
+2⃣ A **Lambda function** is triggered when events are added to DLQ.<br>
 3⃣ Lambda **checks DynamoDB** if the event was already corrected: 
 - ✅ If **not corrected before** → Sent to **Recalculation Lambda**. 
-- ❌ If **already corrected once** → Pushed to **S3 Failure Storage** for manual investigation. 
-4⃣ If recalculation is **successful**, the event is **overwritten in S3**. 
-5⃣ If **failure persists even after retries**, event is stored permanently in **S3 for manual intervention**. 
+- ❌ If **already corrected once** → Pushed to **S3 Failure Storage** for manual investigation.<br> 
+4⃣ If recalculation is **successful**, the event is **overwritten in S3**.<br>
+5⃣ If **failure persists even after retries**, event is stored permanently in **S3 for manual intervention**.<br>
 
 ## 📌 **AWS Services Used & Why?**
 
@@ -182,15 +182,15 @@ If I had access to more tools like a **database** (e.g., Amazon RDS or DynamoDB)
 - **Intelligent anomaly detection** – SageMaker improves system accuracy over time.
 
 ## 📝 **Summary of Workflow** 
-📤 **Event Ingestion:** Mobile/IoT → **EventBridge** (Basic validation) 
-🔄 **Event Processing:** EventBridge → **Lambda Validation** → **Lambda Calculation** → **S3 Storage** 
-📊 **Monitoring:** **CloudWatch** flags errors & **triggers correction Lambda** 
-🤖 **Anomaly Detection:** **SageMaker** detects incorrect events → **Sends alert to CloudWatch** 
-🛠 **Correction & Recalculation:** **CloudWatch triggers correction Lambda** → **Event reprocessed if needed** 
-📌 **Final Failure Handling:** If retry fails → Sent to **SQS DLQ** → **Final retry or push to S3 failure storage**
+📤 **Event Ingestion:** Mobile/IoT → **EventBridge** (Basic validation)<br> 
+🔄 **Event Processing:** EventBridge → **Lambda Validation** → **Lambda Calculation** → **S3 Storage**<br> 
+📊 **Monitoring:** **CloudWatch** flags errors & **triggers correction Lambda**<br> 
+🤖 **Anomaly Detection:** **SageMaker** detects incorrect events → **Sends alert to CloudWatch**<br> 
+🛠 **Correction & Recalculation:** **CloudWatch triggers correction Lambda** → **Event reprocessed if needed**<br> 
+📌 **Final Failure Handling:** If retry fails → Sent to **SQS DLQ** → **Final retry or push to S3 failure storage**<br>
 
 ### 🔥 **Final Thoughts** 
 
-🎯 This architecture provides **reliability, scalability, and real-time monitoring** for event-driven workloads. 
-🚀 **Using AWS-native services ensures** a **cost-effective, serverless, and scalable** solution. 
-⚡ **Automated anomaly detection and corrections improve event integrity over time.**
+🎯 This architecture provides **reliability, scalability, and real-time monitoring** for event-driven workloads.<br> 
+🚀 **Using AWS-native services ensures** a **cost-effective, serverless, and scalable** solution.<br> 
+⚡ **Automated anomaly detection and corrections improve event integrity over time.**<br>
