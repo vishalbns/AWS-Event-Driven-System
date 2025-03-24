@@ -109,7 +109,7 @@ Once an event is flagged, the **Correction Lambda** decides if recalculation is 
 - **Tracks correction history** → Prevents infinite loops of retrying. 
 - **Fast lookups** → Ensures correction is not repeated unnecessarily. 
 
-## 🔷 **Step 6: Dead Letter Queue (Final Retries & Investigation) ❌ **SQS DLQ (Final Retry Mechanism & Investigation Storage)** 
+## 🔷 **Step 6: Dead Letter Queue (Final Retries & Investigation) ❌ SQS DLQ (Final Retry Mechanism & Investigation Storage)** 
 
 - Events that **fail multiple times** are stored in **DLQ**. 
 - A **Lambda function periodically checks DLQ** and retries processing. 
@@ -117,7 +117,7 @@ Once an event is flagged, the **Correction Lambda** decides if recalculation is 
 - **Prevents Event Loss** – Stores all failed events for later analysis. 
 - **Retry Handling** – Lambda function can **retry events before archiving**. 
 
-## 🔷 **Step 7: Dead Letter Queue (Final Retries & Investigation) ❌ **SQS DLQ (Final Retry Mechanism & Investigation Storage)**
+## 🔷 **Step 7: Dead Letter Queue (Final Retries & Investigation) ❌ SQS DLQ (Final Retry Mechanism & Investigation Storage)**
 
 All events that **fail validation, processing, or correction** multiple times are stored in **SQS Dead Letter Queue (DLQ)**. 
 
