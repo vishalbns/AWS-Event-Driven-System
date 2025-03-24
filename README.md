@@ -17,12 +17,16 @@ Designing a **fault-tolerant, scalable, and automated** event-driven system that
 - **Managed Event Bus** – Handles high throughput with low latency. 
 - **Structural Validation** – Ensures event format correctness before further processing. 
 
+![](images/EventBridge.png)
+
 #### **Flow:** 
 
 1⃣ Mobile & IoT devices send events to **EventBridge**.<br>
 2⃣ EventBridge applies **basic structural validation** (schema check).<br>
 3⃣ ✅ If valid → Forwarded to the **Lambda Verification Function**.<br>
 4⃣ ❌ If invalid → Sent to **Dead Letter Queue (DLQ) for later review**.<br>
+
+![](images/SQS_DLQ.png)
 
 ## 🔷 **Step 2: Event Verification & Processing** 
 ### 🛡 **AWS Lambda (Verification Lambda) → AWS Lambda (Calculation Lambda)** 
@@ -60,6 +64,8 @@ Once verified, the event is **processed and stored**.
 2⃣ ✅ Successful results are stored in **S3 for long-term storage**.<br>
 3⃣❌ If processing fails → Event goes to **DLQ for later retries**.<br>
 
+![](images/Lambda.png)
+
 ## 🔷 **Step 3: Monitoring & Error Detection** 
 
 ### 🔍 **AWS CloudWatch (Error Monitoring & Flagging)**
@@ -74,6 +80,8 @@ All **EventBridge, Lambda, and S3** activities are monitored by **CloudWatch**.
 1⃣ CloudWatch **monitors logs and metrics** from EventBridge, Lambda, and S3.<br>
 2⃣ If errors/discrepancies are detected → **Triggers Correction Lambda**.<br> 
 3⃣ **Correction Lambda** determines if recalculation is needed.<br>
+
+![](images/CloudWatch.png)
 
 ## 🔷 **Step 4: Anomaly Detection & Reprocessing**
 
